@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<html ng-app="myApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>Travel and Entertainment Search</title>
+
+<link rel="stylesheet" href="style1.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
+<script type='text/javascript' src="Validations.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvgFsocy91WWI8qwaHELmHH1C18j8V0XM&libraries=places&callback=initAutocomplete"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+    
+<style>
+span.stars, span.stars span {
+    display: block;
+    background: url(stars.png) 0 -16px repeat-x;
+    width: 80px;
+    height: 16px;
+}
+
+span.stars span {
+    background-position: 0 0;
+}
+
+.fa {
+  padding: 3px;
+  font-size: 25px;
+  width: 35px;
+  height: 30px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  border-radius: 4px;
+}
+
+.fa:hover {
+    opacity: 0.7;
+    text-decoration: none;
+}
+
+.fa-twitter {
+  background: #55ACEE;
+  color: white;
+}
+    
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial;
+}
+
+.header {
+    text-align: center;
+    padding: 32px;
+}
+
+.row {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    -ms-flex-wrap: wrap; /* IE10 */
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
+
+/* Create four equal columns that sits next to each other */
+.column {
+    -ms-flex: 25%; /* IE10 */
+    flex: 25%;
+    max-width: 25%;
+    padding: 0 4px;
+}
+
+.column img {
+    margin-top: 8px;
+    vertical-align: middle;
+}
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+/*@media screen and (max-width: 800px) {
+    .column {
+        -ms-flex: 50%;
+        flex: 50%;
+        max-width: 50%;
+    }
+}*/
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+/*@media screen and (max-width: 600px) {
+    .column {
+        -ms-flex: 100%;
+        flex: 100%;
+        max-width: 100%;
+    }
+}*/
+    
+       Optional: Makes the sample page fill the window. 
+      html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .controls {
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      #origin-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 1px;
+        margin-top: 10px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 392px;
+      }
+        
+      #destination-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        margin-top: 10px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 392px;
+      }
+
+      #origin-input:focus,
+      #destination-input:focus {
+        border-color: #4d90fe;
+      }
+
+      #mode-selector {
+        margin-left: 12px;
+        padding: 5px 11px 0px 11px;
+      }
+
+      #mode-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+    
+    #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+        visibility:hidden;
+      }
+    
+    select::-ms-expand {
+    display: none;
+    }
+/*#place_details_tabs{
+   transition: all linear 0.5s;
+   position: relative;
+   top: 0;
+   left: 0;
+}
+.ng-hide {
+  height: 0;
+  width: 0;
+  top:50px;
+  left: -100px;
+}*/
+
+</style>
+</head>
+   
+<body>
+<script> 
+/*function getGeoLocation(){
+//alert("ipapi");
+document.getElementById("detailsmainbutton").setAttribute("disabled",true);
+var ipapi_result;
+document.getElementById("categoryfield").selectedIndex=0;
+document.getElementsByName("radiobutton")[0].checked=true;
+document.getElementById("search").disabled=true;
+var url = "http://ip-api.com/json";
+var http = new XMLHttpRequest();
+http.open("GET", url, false);// "synchronous"
+http.onreadystatechange = function() {
+if(http.readyState == 4 && http.status == 200) {
+ipapi_result=JSON.parse(http.responseText);
+}
+}
+http.send();
+var jlat=ipapi_result.lat;
+var jlon=ipapi_result.lon;
+//alert("Lat: "+jlat+" Lon: "+jlon);
+if(jlat!="" && jlon!=""){
+document.getElementById("ipapilat").value=jlat;
+document.getElementById("ipapilon").value=jlon;
+//document.getElementById("search").disabled=false;   
+}
+}
+    
+var newwindow;
+function poptastic(url)
+{
+	newwindow=window.open(url,'name','height=400,width=200');
+	if (window.focus){
+        newwindow.focus();
+    }
+}*/
+</script>
+<div ng-controller="MyFormCtrl">
+<form action="" method="post" id="searchform" class="example">
+<input type="hidden" id="ipapilat" name="iplat" value="">
+<input type="hidden" id="ipapilon" name="iplon" value="">
+<div id="searchbox" style="width:850px;height: 350px;background-color: #F5F5F5;margin-left: 20%;margin-top: 2%;border: 3px solid;border-style: outset">
+<h2 style="text-align: center;font-family:helvetica">Travel and Entertainment Search</h2>
+    
+<div class="form-group required"><label class="control-label"><b style="font-family:helvetica;font-size:14px;margin-left:120px">Keyword </b></label><input type="text" id="keywordfield" name="keyword" required autofocus=true style="margin-left:51px;width:450px;border-radius: 4px 4px;" ng-model="keyword" onkeydown="validateKeyword(event)" onfocusout="validateKeywordFocusOut()"><p id="keyworderror" style="font-size: 10px;margin-left:240px;display: none">Keyword Error</p></div>
+<br>
+    
+<div style="margin-top: -26px"><b style="font-family:helvetica;font-size:14px;margin-left:120px">Category </b>
+<select name="category" id="categoryfield" style="margin-left:55px;width:380px;border-radius: 4px 4px" ng-model="category">
+<option value="">Default</option>
+<!--<option value="default" selected>Default</option>-->
+<option value="airport">Airport</option>
+<option value="amusement park">Amusement Park</option>
+<option value="aquarium">Aquarium</option>
+<option value="art gallery">Art Gallery</option>
+<option value="bakery">Bakery</option>
+<option value="bar">Bar</option>
+<option value="beauty salon">Beauty Salon</option>
+<option value="bowling alley">Bowling Alley</option>
+<option value="bus station">Bus Station</option>
+<option value="cafe">Cafe</option>
+<option value="campground">Campground</option>
+<option value="car rental">Car Rental</option>
+<option value="casino">Casino</option>
+<option value="lodging">Lodging</option>
+<option value="movie theatre">Movie Theatre</option>
+<option value="museum">Museum</option>
+<option value="night club">Night Club</option>
+<option value="park">Park</option>
+<option value="parking">Parking</option>
+<option value="restaurant">Restaurant</option>
+<option value="shopping mall">Shopping Mall</option>
+<option value="stadium">Stadium</option>
+<option value="subway station">Subway Station</option>
+<option value="taxi stand">Taxi Stand</option>
+<option value="train station">Train Station</option>
+<option value="transit station">Transit Station</option>
+<option value="travel agency">Travel Agency</option>
+<option value="zoo">Zoo</option>
+</select><br><br></div>
+    
+<div><b style="font-family:helvetica;font-size:14px;margin-left:120px">Distance (miles) </b><input type="text" id="distancefield" name="distance" placeholder="10" style="margin-left:9px;width:375px;border-radius: 4px 4px" ng-model="distance"></div><br>
+    
+<div class="form-group required" style="margin-top: -6px"><label class="control-label"><b style="font-family:helvetica;font-size:14px;margin-left:120px">From </b></label>
+<div style="margin-left: 28%;margin-top:-2%">
+<input type="radio" name="radiobutton" id="radio1" value="Here" checked ng-model="radio" onclick="disableSearchButton()"> Current location<br>
+<input type="radio" name="radiobutton" id="radio2" value="location" ng-model="radio" onclick="disableSearchButton()"> Other, Please specify:<br>
+<input type="text" name="locationtext" id="locationtext" formnovalidate="" placeholder="Enter a location" required style="margin-left:4%;width:430px;border-radius: 4px 4px" class='enableOnSelect' disabled ng-model="locationfield" onkeydown="validateLocationField(event)" onfocusout="validateLocationFieldFocusOut()"><p id="locationtexterror" style="font-size: 10px;margin-left:25px;display: none">LocationText Error</p>
+</div></div><br>
+    
+<div style="padding-left: 14%;margin-top: -3%">    
+<input type="button" name="submit" value="Search" style="border-radius: 6px" id="search" class="btn btn-primary" ng-click="abc()"><span class="glyphicon glyphicon-search" style="margin-left: -77px"></span>
+<input type="button" name="reset" value="Clear" style="border-radius: 6px;margin-left:60px" id="clear" ng-click="cleardata()">
+</div>
+</div><br>
+</form>
+    
+<div style="margin-left: 42%">    
+<button name="results" style="border-radius: 6px" id="resultsbutton" ng-click="showResults()">Results</button>
+<button name="favourites" style="margin-left:1px" id="favouritesbutton" ng-click="showFavorites()">Favourites</button>
+</div>
+
+<div class="container" id="progressbar" style="display: none;margin-top: 2%">
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+    </div>
+  </div>
+</div>
+    
+<div id="resultstable" style="display: none;margin-top:10%;margin-left: -17%" ng-hide="myVal1" class="animate-hide1">
+<button type="button" style="width: 80px;height: 30px;margin-top:-153px;margin-left:1323px;" class="btn btn-default btn-sm" disabled=true id="detailsmainbutton" ng-click="showPrevDetails()">Details<span class="glyphicon glyphicon-chevron-right"></span></button>
+<!--<div class="container">
+<div class="table-responsive">-->
+<table class="table table-hover" rules="rows" border=0px;border-collapse: collapse style="margin-top: -5%;margin-left: 260px;width:1175px;">
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="table-danger">
+<th style="width: 90px;text-align: center">#</th>
+<th style="width: 50px;text-align: center">Category</th>
+<th style="width: 400px;text-align: center">Name</th>
+<th style="width: 430px;text-align: center">Address</th>
+<th style="width: 100px;text-align: center">Favourite</th>
+<th style="width: 100px;text-align: center">Details</th>
+</tr>
+<tr ng-repeat="myindex in resultsdata">
+<td>{{ $index + 1 }}</td>
+<td><img src="{{myindex.icon}}" style="height: 40px;width: auto"/></td>
+<td>{{myindex.name}}</td>
+<td>{{myindex.vicinity}}</td>
+<td><input type="button" style="width: 30px;height: 30px" class="btn btn-default btn-sm"/><span class="glyphicon glyphicon-star-empty" style="margin-left: -22px" ng-click="saveFavoritesInMainPage($index)" id="mainpage_favorite" name="glyphicon glyphicon-star-empty"></span></td>
+<td><input type="button" style="width: 30px;height: 30px" class="btn btn-default btn-sm" ng-click="showDetails($index)"/><span class="glyphicon glyphicon-chevron-right" style="margin-left: -22px"></span></td>
+</tr>
+</table>
+<!--</div>
+</div>-->
+<div style="display: none;margin-left: 860px" id="nextprevdiv">
+<input type="button" class="inline" value="Previous" id="previous" onclick="" style="border-radius: 6px;width:80px;background-color:white;display: none;display:inline-block;height: 40px;border-color: black" ng-click="previouspage()">
+<input type="button" class="inline" value="Next" id="next" onclick="" style="border-radius: 6px;width:80px;background-color: white;display:none;display:inline-block;height: 40px;border-color: black" ng-click="nextpage()">
+</div>
+</div>
+<div id="resultstable_norecords" style="display: none;margin-top:10%;margin-left: -8%">
+<table class="table table-responsive" rules="rows" border=0px;border-collapse: collapse style="margin-top: -5%;margin-left: 260px;width:1175px;">
+<tr class="bg-warning"><td style="text-align: center">No records found</td></tr>
+</table>
+</div>
+<div id="resultstable_error" style="display: none;margin-top:10%;margin-left: -8%">
+<table class="table table-responsive" rules="rows" border=0px;border-collapse: collapse style="margin-top: -5%;margin-left: 260px;width:1175px;">
+<tr class="bg-danger"><td style="text-align: center">No records found</td></tr>
+</table>
+</div>
+  
+<h3 style="text-align: center;display: none" id="place_name"><b>{{place_details.name}}</b></h3>
+    
+<div id="place_details_tabs" style="margin-top: -80px" ng-hide="myVal" class="animate-hide">
+<div style="width: 100%;height: 45px;padding-top: 50px">
+<button type="button" style="width: 50px;height: 30px;display: none;margin-left: 18px;font-weight: bold;margin-top: 50px" class="btn btn-default btn-sm" id="listbutton" ng-click="backToList()">List<span class="glyphicon glyphicon-chevron-left" style="margin-left: -31px"></span></button>
+<div style="margin-left: 1083px;margin-top: -31px;display: none" id="tweetfavouritediv">
+<a href="" class="btn btn-default" style="width: 35px;height:30px;margin-top:-11px;padding:2px;font-size: 20px"><span class="glyphicon glyphicon-star-empty" ng-click="saveFavorites()" id="tabs_favorite"></span></a>
+<a href="https://twitter.com/intent/tweet?text=Check out {{twitter_name}} located at {{twitter_address}} Website: &url={{twitter_website}}&hashtags=TravelAndEntertainmentSearch"><img src="http://cs-server.usc.edu:45678/hw/hw8/images/Twitter.png" style="width: 35px;height:30px;margin-top:-11px;"></a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+</div>
+<div class="container" style="margin-top: 75px;height: 100%">
+          <ul class="nav nav-tabs" style="width: 1144px">
+            <li style="float: right;"><a href="#reviews" ng-click="calc_ratings()" class="nav-link" data-toggle="tab">Reviews</a></li>
+            <li style="float: right;"><a href="#mapstab" ng-click="" class="nav-link" data-toggle="tab">Map</a></li>
+            <li style="float: right;"><a href="#photos" ng-click="" class="nav-link" data-toggle="tab">Photos</a></li>
+            <li style="float: right;"><a href="#info" ng-click="" class="nav-link active" data-toggle="tab">Info</a></li>
+          </ul>
+          <div class="tab-content">
+              
+        <div class="tab-pane active" id="info" style="margin-top: 5px;width: 1145px">
+        <table class="table table-striped" id="info_table">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody class="table-striped">
+        <tr>
+            <td colspan="1" style="text-align: left"><b>Address</b></td>
+            <td colspan="3" style="text-align: left">{{place_details.formatted_address}}</td>
+        </tr>
+        <tr>
+            <td colspan="1" style="text-align: left"><b>Phone Number</b></td>
+            <td colspan="3" style="text-align: left">{{place_details.international_phone_number}}</td>
+        </tr>
+        <tr>
+            <td colspan="1" style="text-align: left"><b>Price Level</b></td>
+            <td colspan="3" style="text-align: left">{{price_level}}</td>
+        </tr>
+        <tr>
+            <td colspan="1" style="text-align: left"><b>Rating</b></td>
+            <td colspan="3" style="text-align: left">{{place_details.rating}} <div id="{{place_details.id}}" style="margin-left: 25px;margin-top: -22px"></div></td>
+            <!--<td colspan="3" style="text-align: left">{{place_details.rating}} <span class="stars" style="margin-left:28px;margin-top:-20px;"></span></td>-->
+        </tr>
+        <tr>
+            <td colspan="1" style="text-align: left"><b>Google Page</b></td>
+            <td colspan="3" style="text-align: left"><a href="{{place_details.url}}" target="_blank">{{place_details.url}}</a></td>
+        </tr>
+        <tr>
+            <td colspan="1" style="text-align: left"><b>Website</b></td>
+            <td colspan="3" style="text-align: left"><a href="{{place_details.website}}" target="_blank">{{place_details.website}}</a></td>
+        </tr>
+        <tr>
+            <td colspan="1" style="text-align: left"><b>Hours</b></td>
+            <td colspan="3" style="text-align: left">{{openorclose ? 'Open now:'+currday_open_hours : 'Closed'}} <a href="" ng-click="" style="text-decoration: underline" data-toggle="modal" data-target="#myModal">Daily open hours</a></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+<div class="tab-pane" id="photos" style="width: 1140px">
+<div class="row"> 
+  <div class="column">
+      <a href="{{photo1}}" target="_blank"><img src="{{photo1}}" class="img-thumbnail" alt="" ng-style="photo_flag1 && {'width':'400px'} || {'border': 'none'}"></a>
+      <a href="{{photo5}}" target="_blank"><img src="{{photo5}}" class="img-thumbnail" alt="" ng-style="photo_flag5 && {'width':'400px'} || {'border': 'none'}"></a>
+      <a href="{{photo9}}" target="_blank"><img src="{{photo9}}" class="img-thumbnail" alt="" ng-style="photo_flag9 && {'width':'400px'} || {'border': 'none'}"></a>
+  </div>
+  <div class="column">
+      <a href="{{photo2}}" target="_blank"><img src="{{photo2}}" class="img-thumbnail" alt="" ng-style="photo_flag2 && {'width':'400px'} || {'border': 'none'}"></a>
+      <a href="{{photo6}}" target="_blank"><img src="{{photo6}}" class="img-thumbnail" alt="" ng-style="photo_flag6 && {'width':'400px'} || {'border': 'none'}"></a>
+      <a href="{{photo10}}" target="_blank"><img src="{{photo10}}" class="img-thumbnail" alt="" ng-style="photo_flag10 && {'width':'400px'} || {'border': 'none'}"></a>
+  </div>  
+  <div class="column">
+      <a href="{{photo3}}" target="_blank"><img src="{{photo3}}" class="img-thumbnail" alt="" ng-style="photo_flag3 && {'width':'400px'} || {'border': 'none'}"></a>
+      <a href="{{photo7}}" target="_blank"><img src="{{photo7}}" class="img-thumbnail" alt="" ng-style="photo_flag7 && {'width':'400px'} || {'border': 'none'}"></a>
+  </div>
+  <div class="column">
+      <a href="{{photo4}}" target="_blank"><img src="{{photo4}}" class="img-thumbnail" alt="" ng-style="photo_flag4 && {'width':'400px'} || {'border': 'none'}"></a>
+      <a href="{{photo8}}" target="_blank"><img src="{{photo8}}" class="img-thumbnail" alt="" ng-style="photo_flag8 && {'width':'400px'} || {'border': 'none'}"></a>
+  </div>
+</div>
+<div id="photos_norecords" style="display: none;margin-left:-275px;margin-top: 150px;">
+<table class="table table-responsive" rules="rows" border=0px;border-collapse: collapse style="margin-top: -5%;margin-left: 260px;width:1175px;">
+<tr class="bg-warning"><td style="text-align: center">No records found</td></tr>
+</table>
+</div>
+</div>
+              
+<div id="mapstab" class="tab-pane">
+<div style="margin-top:18px;">
+<p>From</p>
+<p style="margin-left:405px;margin-top:-30px;">To</p>
+<p style="margin-left:807px;margin-top:-30px;">Travel Mode</p>
+</div>
+<div style="margin-top:-12px;width: 1140px">
+<input id="origin-input" class="controls" placeholder="Enter an origin location" type="text" onkeydown="toggleDirectionsButton(event)">
+
+<input id="destination-input" class="controls" placeholder="Enter a destination location" type="text" readonly>
+
+<select id="mode-selector" size="1" class="form-control" style="width:200px;margin-left:810px;margin-top:-33px;height: 34px">
+  <option value="DRIVING" id="driving" selected>Driving</option>
+  <option value="BICYCLING" id="bicycling">Bicycling</option>
+  <option value="TRANSIT" id="transit">Transit</option>
+  <option value="WALKING" id="walking">Walking</option>
+</select>
+
+</div>
+<button name="getdirections" id="getdirectionsbutton" class="btn btn-primary" style="margin-top:-55px;margin-left: 1025px;width: 120px;">Get Directions</button>
+<img src="http://cs-server.usc.edu:45678/hw/hw8/images/Pegman.png" onclick="toggleStreetView()" style="height:30px;width:30px;margin-top: -18px;border-width: 1px;border-style: solid;" id="pegman">
+<div id="map"></div>
+<div id="right-panel"></div>
+</div>
+<div class="tab-pane" id="reviews">
+<div style="margin-top: 15px;margin-left: -6px">
+<select class="form-control" id="reviewstype" size="1" style="width:200px;margin-left:6px;height:33px;background-color: #808080;color: white">
+  <option value="googlereviews" ng-click="selectReviewType()" selected ng-hide="">Google Reviews</option>
+  <option value="yelpreviews" ng-click="selectReviewType()" ng-hide="">Yelp Reviews</option>
+</select>
+<select class="form-control" id="reviewsfilter" size="1" style="width:200px;margin-left:225px;height:33px;margin-top: -32px;background-color: #808080;color: white">
+  <option value="defaultorder" ng-click="sortReviews()">Default Order</option>
+  <option value="higestrating" ng-click="sortReviews()">Highest Rating</option>
+  <option value="lowestrating" ng-click="sortReviews()">Lowest Rating</option>
+  <option value="mostrecent" ng-click="sortReviews()">Most Recent</option>
+  <option value="leastrecent" ng-click="sortReviews()">Least Recent</option>
+</select>
+</div>
+
+    
+<div class="container" style="margin-top: 30px;margin-left: -16px" id="google_reviews_default">
+  <div class="panel panel-default" ng-repeat="reviewsdata in userreviews" style="margin-top: -15px">
+    <div class="panel-body">
+    <a href="{{reviewsdata.author_url}}" target="_blank"><img src="{{reviewsdata.profile_photo_url}}" style="height: 50px;width: 50px"></a>
+    <div style="padding-left: 65px;margin-top: -52px">
+    <a href="{{reviewsdata.author_url}}" target="_blank"><b>{{reviewsdata.author_name}}</b></a>
+    <div style="color: #A9A9A9;font-weight: bold;margin-top: 1px">{{review_time[$index]}}  <div id="{{reviewsdata.time}}" style="margin-left: 150px;margin-top: -31px;padding-top: 7px"></div></div>
+    <p style="margin-top: 13px">{{reviewsdata.text}}</p>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="container" style="margin-top: 30px;margin-left: -16px;display: none" id="google_reviews_highest_rating">
+  <div class="panel panel-default" ng-repeat="reviewsdata in userreviews | orderBy : sortFunctionHighestRating" style="margin-top: -15px">
+    <div class="panel-body">
+    <a href="{{reviewsdata.author_url}}" target="_blank"><img src="{{reviewsdata.profile_photo_url}}" style="height: 50px;width: 50px"></a>
+    <div style="padding-left: 65px;margin-top: -52px">
+    <a href="{{reviewsdata.author_url}}" target="_blank"><b>{{reviewsdata.author_name}}</b></a>
+    <div style="color: #A9A9A9;font-weight: bold;margin-top: 1px">{{review_time[$index]}}  <div id="{{google_highestRating_Ids[$index]}}" style="margin-left: 150px;margin-top: -31px;padding-top: 7px"></div></div>
+    <p style="margin-top: 10px">{{reviewsdata.text}}</p>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="container" style="margin-top: 30px;margin-left: -16px;display: none" id="google_reviews_lowest_rating">
+  <div class="panel panel-default" ng-repeat="reviewsdata in userreviews | orderBy : sortFunctionLowestRating" style="margin-top: -15px">
+    <div class="panel-body">
+    <a href="{{reviewsdata.author_url}}" target="_blank"><img src="{{reviewsdata.profile_photo_url}}" style="height: 50px;width: 50px"></a>
+    <div style="padding-left: 65px;margin-top: -52px">
+    <a href="{{reviewsdata.author_url}}" target="_blank"><b>{{reviewsdata.author_name}}</b></a>
+    <div style="color: #A9A9A9;font-weight: bold;margin-top: 1px">{{review_time[$index]}}  <div id="{{google_lowestRatings_Ids[$index]}}" style="margin-left: 150px;margin-top: -31px;padding-top: 7px"></div></div>
+    <p style="margin-top: 10px">{{reviewsdata.text}}</p>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="container" style="margin-top: 30px;margin-left: -16px;display: none" id="google_reviews_most_recent">
+  <div class="panel panel-default" ng-repeat="reviewsdata in userreviews | orderBy : sortFunctionMostRecent" style="margin-top: -15px">
+    <div class="panel-body">
+    <a href="{{reviewsdata.author_url}}" target="_blank"><img src="{{reviewsdata.profile_photo_url}}" style="height: 50px;width: 50px"></a>
+    <div style="padding-left: 65px;margin-top: -52px">
+    <a href="{{reviewsdata.author_url}}" target="_blank"><b>{{reviewsdata.author_name}}</b></a>
+    <div style="color: #A9A9A9;font-weight: bold;margin-top: 1px">{{desc_review_time[$index]}}  <div id="{{google_MostRecentIds[$index]}}" style="margin-left: 150px;margin-top: -31px;padding-top: 7px"></div></div>
+    <p style="margin-top: 10px">{{reviewsdata.text}}</p>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="container" style="margin-top: 30px;margin-left: -16px;display: none" id="google_reviews_least_recent">
+  <div class="panel panel-default" ng-repeat="reviewsdata in userreviews | orderBy : sortFunctionLeastRecent" style="margin-top: -15px">
+    <div class="panel-body">
+    <a href="{{reviewsdata.author_url}}" target="_blank"><img src="{{reviewsdata.profile_photo_url}}" style="height: 50px;width: 50px"></a>
+    <div style="padding-left: 65px;margin-top: -52px">
+    <a href="{{reviewsdata.author_url}}" target="_blank"><b>{{reviewsdata.author_name}}</b></a>
+    <div style="color: #A9A9A9;font-weight: bold;margin-top: 1px">{{asc_review_time[$index]}}  <div id="{{google_LeastRecentIds[$index]}}" style="margin-left: 150px;margin-top: -31px;padding-top: 7px"></div></div>
+    <p style="margin-top: 10px">{{reviewsdata.text}}</p>
+    </div>
+    </div>
+  </div>
+</div>
+    
+<div class="container"  style="margin-top: 30px;margin-left: -16px;display:none" id="yelp_reviews_default">
+  <div class="panel panel-default" ng-repeat="reviewsdata in yelp_reviews" style="margin-top: -15px">
+    <div class="panel-body">
+    <a href="{{reviewsdata.url}}" target="_blank"><img src="{{reviewsdata.user.image_url}}" style="height: 50px;width: 50px"></a>
+    <div style="padding-left: 65px;margin-top: -52px">
+    <a href="{{reviewsdata.url}}" target="_blank"><b>{{reviewsdata.user.name}}</b></a>
+    <div style="color: #A9A9A9;font-weight: bold">{{reviewsdata.time_created}}  <div id="{{reviewsdata.id}}" style="margin-left: 150px;margin-top: -31px;padding-top: 7px"></div></div>
+    <p>{{reviewsdata.text}}</p>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="container"  style="margin-top: 30px;margin-left: -16px;display:none" id="yelp_reviews_highest_rating">
+  <div class="panel panel-default" ng-repeat="reviewsdata in yelp_reviews | orderBy : sortFunctionHighestRating" style="margin-top: -15px">
+    <div class="panel-body">
+    <a href="{{reviewsdata.url}}" target="_blank"><img src="{{reviewsdata.user.image_url}}" style="height: 50px;width: 50px"></a>
+    <div style="padding-left: 65px;margin-top: -52px">
+    <a href="{{reviewsdata.url}}" target="_blank"><b>{{reviewsdata.user.name}}</b></a>
+    <div style="color: #A9A9A9;font-weight: bold">{{reviewsdata.time_created}}  <div id="{{yelp_highestRating_Ids[$index]}}" style="margin-left: 150px;margin-top: -31px;padding-top: 7px"></div></div>
+    <p>{{reviewsdata.text}}</p>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="container"  style="margin-top: 30px;margin-left: -16px;display:none" id="yelp_reviews_lowest_rating">
+  <div class="panel panel-default" ng-repeat="reviewsdata in yelp_reviews | orderBy : sortFunctionLowestRating" style="margin-top: -15px">
+    <div class="panel-body">
+    <a href="{{reviewsdata.url}}" target="_blank"><img src="{{reviewsdata.user.image_url}}" style="height: 50px;width: 50px"></a>
+    <div style="padding-left: 65px;margin-top: -52px">
+    <a href="{{reviewsdata.url}}" target="_blank"><b>{{reviewsdata.user.name}}</b></a>
+    <div style="color: #A9A9A9;font-weight: bold">{{reviewsdata.time_created}}  <div id="{{yelp_lowestRating_Ids[$index]}}" style="margin-left: 150px;margin-top: -31px;padding-top: 7px"></div></div>
+    <p>{{reviewsdata.text}}</p>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="container"  style="margin-top: 30px;margin-left: -16px;display:none" id="yelp_reviews_most_recent">
+  <div class="panel panel-default" ng-repeat="reviewsdata in yelp_reviews | orderBy : sortFunctionMostRecent" style="margin-top: -15px">
+    <div class="panel-body">
+    <a href="{{reviewsdata.url}}" target="_blank"><img src="{{reviewsdata.user.image_url}}" style="height: 50px;width: 50px"></a>
+    <div style="padding-left: 65px;margin-top: -52px">
+    <a href="{{reviewsdata.url}}" target="_blank"><b>{{reviewsdata.user.name}}</b></a>
+    <div style="color: #A9A9A9;font-weight: bold">{{yelp_desc[$index]}}  <div id="{{yelp_MostRecentIds[$index]}}" style="margin-left: 150px;margin-top: -31px;padding-top: 7px"></div></div>
+    <p>{{reviewsdata.text}}</p>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="container"  style="margin-top: 30px;margin-left: -16px;display:none" id="yelp_reviews_least_recent">
+  <div class="panel panel-default" ng-repeat="reviewsdata in yelp_reviews | orderBy : sortFunctionLeastRecent" style="margin-top: -15px">
+    <div class="panel-body">
+    <a href="{{reviewsdata.url}}" target="_blank"><img src="{{reviewsdata.user.image_url}}" style="height: 50px;width: 50px"></a>
+    <div style="padding-left: 65px;margin-top: -52px">
+    <a href="{{reviewsdata.url}}" target="_blank"><b>{{reviewsdata.user.name}}</b></a>
+    <div style="color: #A9A9A9;font-weight: bold">{{yelp_asc[$index]}}  <div id="{{yelp_LeastRecentIds[$index]}}" style="margin-left: 150px;margin-top: -31px;padding-top: 7px"></div></div>
+    <p>{{reviewsdata.text}}</p>
+    </div>
+    </div>
+  </div>
+</div>
+    
+<div id="google_reviews_norecords" style="display: none;margin-left:-275px;margin-top: 150px;">
+<table class="table table-responsive" rules="rows" border=0px;border-collapse: collapse style="margin-top: -5%;margin-left: 260px;width:1175px;">
+<tr class="bg-warning"><td style="text-align: center">No records found</td></tr>
+</table>
+</div>
+<div id="yelp_reviews_norecords" style="display: none;margin-left:-275px;margin-top: 150px;">
+<table class="table table-responsive" rules="rows" border=0px;border-collapse: collapse style="margin-top: -5%;margin-left: 260px;width:1175px;">
+<tr class="bg-warning"><td style="text-align: center">No records found</td></tr>
+</table>
+</div>
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+<div id="placedetails_error" style="display: none;margin-top:10%;margin-left: -8%">
+<table class="table table-responsive" rules="rows" border=0px;border-collapse: collapse style="margin-top: -5%;margin-left: 260px;width:1175px;">
+<tr class="bg-danger"><td style="text-align: center">No records found</td></tr>
+</table>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog" style="margin-top: 194px">
+    <div class="modal-dialog" style="width: 350px">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><b>Open hours</b></h4>
+        </div>
+        <div class="modal-body" style="height:275px;">
+          <table class="table" id="tblGrid">
+            <tbody>
+                <tr><td class="text-left" style="font-size:13px;" ng-style="monday_flag && {'font-weight':'bold'} || {'font-weight': ''}">Monday</td>
+                <td style="font-size:13px;" ng-style="monday_flag && {'font-weight':'bold'} || {'font-weight': ''}">{{monday_hours}}</td>
+              </tr>
+              <tr><td class="text-left" style="font-size:13px;" ng-style="tuesday_flag && {'font-weight':'bold'} || {'font-weight': ''}">Tuesday</td>
+                <td style="font-size:13px;" ng-style="tuesday_flag && {'font-weight':'bold'} || {'font-weight': ''}">{{tuesday_hours}}</td>
+              </tr>
+              <tr><td class="text-left" style="font-size:13px;" ng-style="wednesday_flag && {'font-weight':'bold'} || {'font-weight': ''}">Wednesday</td>
+                <td style="font-size:13px;" ng-style="wednesday_flag && {'font-weight':'bold'} || {'font-weight': ''}">{{wednesday_hours}}</td>
+              </tr>
+              <tr><td class="text-left" style="font-size:13px;" ng-style="thursday_flag && {'font-weight':'bold'} || {'font-weight': ''}">Thursday</td>
+                <td style="font-size:13px;" ng-style="thursday_flag && {'font-weight':'bold'} || {'font-weight': ''}">{{thursday_hours}}</td>
+              </tr>
+              <tr><td class="text-left" style="font-size:13px;" ng-style="friday_flag && {'font-weight':'bold'} || {'font-weight': ''}">Friday</td>
+                <td style="font-size:13px;" ng-style="friday_flag && {'font-weight':'bold'} || {'font-weight': ''}">{{friday_hours}}</td>
+              </tr>
+              <tr><td class="text-left" style="font-size:13px;" ng-style="saturday_flag && {'font-weight':'bold'} || {'font-weight': ''}">Saturday</td>
+                <td style="font-size:13px;" ng-style="saturday_flag && {'font-weight':'bold'} || {'font-weight': ''}">{{saturday_hours}}</td>
+              </tr>
+              <tr><td class="text-left" style="font-size:13px;" ng-style="sunday_flag && {'font-weight':'bold'} || {'font-weight': ''}">Sunday</td>
+                <td style="font-size:13px;" ng-style="sunday_flag && {'font-weight':'bold'} || {'font-weight': ''}">{{sunday_hours}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer" style="height:60px;">
+          <button type="button" class="btn btn-default" data-dismiss="modal" style="width: 70px;background-color: #808080">Close</button>
+        </div>
+      </div>
+      
+    </div>
+</div>
+<div id="favoritestable" style="display: none;margin-top:10%;margin-left: -17%" class="animate-hide1" ng-hide="myVal1">
+<button type="button" style="width: 80px;height: 30px;margin-top:-153px;margin-left:1323px;" class="btn btn-default btn-sm" id="detailsmainbutton" ng-click="showPrevDetails()">Details<span class="glyphicon glyphicon-chevron-right"></span></button>
+<table class="table table-hover table-responsive" rules="rows" border=0px;border-collapse: collapse style="margin-top: -5%;margin-left: 260px;width:1175px;">
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th style="width: 90px;text-align: center">#</th>
+<th style="width: 50px;text-align: center">Category</th>
+<th style="width: 400px;text-align: center">Name</th>
+<th style="width: 430px;text-align: center">Address</th>
+<th style="width: 100px;text-align: center">Favourite</th>
+<th style="width: 100px;text-align: center">Details</th>
+</tr>
+<tr ng-repeat="myindex in favoritedata_name">
+<td>{{ $index + 1 }}</td>
+<td><img src="{{favoritedata_icon[$index]}}" style="height: 40px;width: auto"/></td>
+<td>{{favoritedata_name[$index]}}</td>
+<td>{{favoritedata_address[$index]}}</td>
+<td><input type="button" style="width: 30px;height: 30px" class="btn btn-default btn-sm" ng-click="deleteFavorite(favoritedata_id[$index])"/><span class="glyphicon glyphicon-trash" style="margin-left: -22px"></span></td>
+<td><input type="button" style="width: 30px;height: 30px" class="btn btn-default btn-sm" id="detailsmainbutton2" ng-click="getPlaceIndex(favoritedata_id[$index])"/><span class="glyphicon glyphicon-chevron-right" style="margin-left: -22px"></span></td>
+</tr>
+</table>
+</div>
+<div id="favoritestable_norecords" style="display: none;margin-top:10%;margin-left: -8%">
+<table class="table table-responsive" rules="rows" border=0px;border-collapse: collapse style="margin-top: -5%;margin-left: 260px;width:1175px;">
+<tr class="bg-warning"><td style="text-align: center">No records found</td></tr>
+</table>
+</div>
+
+</div>
+
+</body>
+</html>

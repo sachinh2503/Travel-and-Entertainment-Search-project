@@ -1,0 +1,214 @@
+td{
+        text-align: center;
+        width: 300px;
+        height: auto;
+    }
+th{
+    text-align: center;
+}
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    #map {
+        height: 500px;
+        width: 1144px;
+        margin-top: 5px;
+      }
+    
+    .floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+        visibility:hidden;
+      }
+
+    .accordion {
+    background-color: white;
+    color: #444;
+    cursor: pointer;
+    #padding: 18px;
+    width: 200px;
+    height: 50px;
+    border: none;
+    text-align: center;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+}
+    .active, .accordion:hover {
+    background-color: white; 
+}
+
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}
+
+button {
+    width: 5%;
+    height: auto;
+    background: #2196F3;
+    color: white;
+    font-size: 14px;
+    font-family: helvetica;
+    border: 1px solid grey;
+    border-left: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0b7dda;
+}
+
+form.example::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+#search{
+  width: 80px;
+  height: 40px;
+  font-family: helvetica;
+  font-size: 14px;
+}
+
+#clear{
+  width: 60px;
+  height: 40px;
+  background-color: white;
+}
+    
+#resultsbutton{
+  width: 80px;
+  height: 40px;
+  background: #2196F3;
+  color: white;
+  font-size: 14px;
+  font-family: helvetica;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+#resultsbutton:hover{
+  background: #0b7dda;        
+}
+
+/*#favouritesbutton{
+  width: 80px;
+  height: 40px;
+  background: #2196F3;
+  color: white;
+  font-size: 14px;
+  font-family: helvetica;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}*/
+#favouritesbutton{
+  width: 80px;
+  height: 40px;
+  background-color: white;
+  color:royalblue;
+  font-size: 14px;
+  font-family: helvetica;
+  cursor: pointer;
+  border: none;
+}
+/*#favouritesbutton:hover{
+  background: #0b7dda;        
+}*/
+
+content:"\e080";
+
+.inline {
+   display:inline-block;
+   margin-right:5px;
+}
+
+/*#getdirectionsbutton{
+  width: 105px;
+  height: 40px;
+  background: #2196F3;
+  color: white;
+  font-size: 12px;
+  font-family: helvetica;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+#getdirectionsbutton:hover{
+  background: #0b7dda;        
+}*/
+
+      #right-panel {
+        height: 100%;
+        float: left;
+        width: 390px;
+        overflow:auto;
+      }
+
+        #right-panel {
+        float: none;
+        width: 1140px;
+      }
+
+.table tbody tr.table-danger td {
+    background-color: #ffe082 !important;
+}
+
+.animate-hide {
+ transition: all linear 1s;
+  opacity:1;
+  padding:0px;
+  position: absolute;
+  left: 165px;
+}
+
+.animate-hide.ng-hide {
+  left: -100%;
+  opacity:0;
+  padding:0 10px;
+}
+
+.animate-hide1 {
+ transition: all linear 1s;
+  opacity:1;
+  padding:0px;
+  position: absolute;
+  left: 165px;
+}
+
+.animate-hide1.ng-hide {
+  left: 100%;
+  opacity:0;
+  padding:0 10px;
+}
+
+.fadein-show,
+.fadein-hide {
+  transition:all linear 3s;
+}
+
+.fadein-show.ng-hide-remove,
+.fadein-hide.ng-hide-add.ng-hide-add-active {
+  opacity: 0;
+  display: block !important;
+}
+
+.fadein-hide.ng-hide-add,
+.fadein-show.ng-hide-remove.ng-hide-remove-active {
+  opacity: 1;
+  display: block !important;
+}
+
