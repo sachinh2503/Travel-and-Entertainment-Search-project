@@ -1,0 +1,2 @@
+# Travel-and-Entertainment-Search-project
+A web based application on AWS for getting a list of places like Cafés, Museums, Bus Stations, Schools etc. within a certain radius of user specified location and user provided inputs, get ratings and user reviews for any selected place from Google and Yelp. Users will have an option to mark any place as a favorite so that all the favorites of the user will be shown in a separate tab.  Technologies: HTML-5, CSS, AngularJS, PHP, jQuery, JSON, Google-APIs, Yelp-APIs
